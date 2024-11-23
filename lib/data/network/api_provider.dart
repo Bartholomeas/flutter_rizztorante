@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_restaurant/data/network/constants/Endpoints.dart';
 import 'package:flutter_restaurant/data/network/dio_client.dart';
 
@@ -6,14 +8,24 @@ class ApiProvider {
 
   Future<dynamic> postLogin() async {
     try {
-      Map<String, dynamic> map = Map();
-      map["email"] = "test@test.com";
-      map["password"] = "!23Haslo";
+      Map<String, dynamic> requestBody = {
+        "email": "test@gmail.com",
+        "password": "!23Haslo"
+      };
 
-      final res = await _dioClient.post(Endpoints.login, data: map);
-      return res.toString(); //TODO: remove
-      // return Login.fromMap(res)
+      final response =
+          await _dioClient.post(Endpoints.login, data: requestBody);
+
+      if (response != null) {
+        if (response is String) {
+          return jsonDecode(response);
+        }
+        return response;
+      }
+      throw Exception('Null response from server');
     } catch (err) {
+      print('Login error in ApiProvider: $err');
+
       rethrow;
     }
   }
