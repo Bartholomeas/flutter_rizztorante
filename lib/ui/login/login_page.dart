@@ -24,34 +24,71 @@ class _LoginPageState extends State<LoginPage> {
 Widget initView(BuildContext context) {
   LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
 
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   return Scaffold(
       appBar: AppBar(title: const Text("Login")),
       body: Consumer<LoginViewModel>(builder: (contextNew, model, _) {
-        print(loginViewModel.apiState);
-
-        switch (loginViewModel.apiState) {
-          case ApiState.loading:
-            return const Center(child: CircularProgressIndicator());
-          case ApiState.completed:
-            return Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text("Tyle razy wcisnąłeś przycisk: "),
-                Text("${model.cl}",
-                    style: Theme.of(context).textTheme.headlineLarge),
-                MaterialButton(
-                  child: const Text("Naciśnij tutaj"),
-                  onPressed: () {
-                    loginViewModel.increaseNumber(_counter);
-                    _counter = loginViewModel.cl;
-                  },
-                )
-              ],
-            ));
-          case ApiState.error:
-            return const Center(child: Text("Error"));
-        }
+        return Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                      labelText: "Email", border: OutlineInputBorder()),
+                )),
+            Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      labelText: "Hasło", border: OutlineInputBorder()),
+                )),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                backgroundColor: Theme.of(context).primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: loginViewModel.apiState == ApiState.loading
+                  ? null
+                  : () {
+                      loginViewModel.login(
+                          emailController.text, passwordController.text);
+                    },
+              child: loginViewModel.apiState == ApiState.loading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(color: Colors.white))
+                  : const Text(
+                      "Zaloguj się",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+            ),
+            if (loginViewModel.apiState == ApiState.error)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Błąd logowania. Sprawdź dane i spróbuj ponownie.",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+              ),
+          ],
+        ));
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

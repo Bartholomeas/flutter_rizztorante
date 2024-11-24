@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_restaurant/data/network/api_provider.dart';
 import 'package:flutter_restaurant/model/user_model.dart';
@@ -8,7 +7,24 @@ class LoginViewModel extends ChangeNotifier {
   ApiState apiState = ApiState.completed;
   UserModel? currentUser;
 
-  Future<void> login() async {}
+  bool get isLoggedIn => currentUser != null;
+
+  Future<void> login(String email, String password) async {
+    try {
+      apiState = ApiState.loading;
+      notifyListeners();
+
+      var response =
+          await _apiProvider.postLogin(email: email, password: password);
+
+      currentUser = UserModel.fromJson(response);
+      apiState = ApiState.completed;
+      notifyListeners();
+    } catch (err) {
+      apiState = ApiState.error;
+      notifyListeners();
+    }
+  }
 
   int cl = 0;
   Future<void> increaseNumber(int cntr) async {
@@ -16,13 +32,7 @@ class LoginViewModel extends ChangeNotifier {
       cl = cntr + 10;
       apiState = ApiState.loading;
       notifyListeners();
-
-      var response = await _apiProvider.postLogin();
-      if (response != null) {
-        apiState = ApiState.completed;
-      } else {
-        apiState = ApiState.error;
-      }
+      apiState = ApiState.completed;
 
       notifyListeners();
 
