@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_restaurant/ui/login/login_page.dart';
 import 'package:flutter_restaurant/ui/login/login_view_model.dart';
+import 'package:flutter_restaurant/ui/menu/menu_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -17,6 +18,8 @@ List<SingleChildWidget> providerList = [];
 void addProviderToList() {
   providerList
       .add(ChangeNotifierProvider(create: (context) => LoginViewModel()));
+  providerList
+      .add(ChangeNotifierProvider(create: (context) => MenuViewModel()));
 }
 
 class MyApp extends StatelessWidget {

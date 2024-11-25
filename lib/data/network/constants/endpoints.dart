@@ -6,5 +6,7 @@ class Endpoints {
   static const int receiveTimeout = 5000;
   static const int connectionTimeout = 3000;
 
-  static const String login = baseUrl + "auth/login";
+  static const String login = "${baseUrl}auth/login";
+
+  static const String menus = "${baseUrl}menus";
 }
