@@ -32,7 +32,20 @@ class ApiProvider {
     try {
       final response = await _dioClient.get(Endpoints.menus);
       if (response != null) {
-        return jsonDecode(response);
+        return response;
+      }
+
+      throw Exception('Null response from server');
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  Future<List<dynamic>> getMenuCategory(String menuId) async {
+    try {
+      final response = await _dioClient.get(Endpoints.menuCategory(menuId));
+      if (response != null) {
+        return response;
       }
 
       throw Exception('Null response from server');

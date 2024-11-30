@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/ui/menu/components/menu_list_item.dart';
 import 'package:flutter_restaurant/ui/menu/menu_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -7,13 +8,6 @@ class MenuPage extends StatefulWidget {
 
   @override
   State<MenuPage> createState() => _MenuPageState();
-  // Widget build(BuildContext context) {
-  //   return const Scaffold(
-  //     body: Center(
-  //       child: Text("Home Page"),
-  //     ),
-  //   );
-  // }
 }
 
 class _MenuPageState extends State<MenuPage> {
@@ -43,10 +37,7 @@ Widget initView(BuildContext context) {
         itemCount: menuViewModel.menus.length,
         itemBuilder: (context, index) {
           final menu = menuViewModel.menus[index];
-          return ListTile(
-            title: Text(menu.name),
-            subtitle: Text(menu.description),
-          );
+          return MenuListItem(menu: menu);
         },
       );
     }),

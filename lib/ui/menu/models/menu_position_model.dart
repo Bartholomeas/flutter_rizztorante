@@ -1,3 +1,26 @@
+class CoreImage {
+  final String id;
+  final String url;
+  final String? alt;
+  final String? caption;
+
+  CoreImage({
+    required this.id,
+    required this.url,
+    this.alt,
+    this.caption,
+  });
+
+  factory CoreImage.fromJson(Map<String, dynamic> json) {
+    return CoreImage(
+      id: json['id'] as String,
+      url: json['url'] as String,
+      alt: json['alt'] as String?,
+      caption: json['caption'] as String?,
+    );
+  }
+}
+
 class MenuPositionModel {
   final String id;
   final String name;
@@ -6,7 +29,7 @@ class MenuPositionModel {
   final bool isVegetarian;
   final bool isVegan;
   final bool isGlutenFree;
-  final String? coreImage;
+  final CoreImage? coreImage;
 
   MenuPositionModel({
     required this.id,
@@ -28,7 +51,9 @@ class MenuPositionModel {
       isVegetarian: json['isVegetarian'],
       isVegan: json['isVegan'],
       isGlutenFree: json['isGlutenFree'],
-      coreImage: json['coreImage'],
+      coreImage: json['coreImage'] != null
+          ? CoreImage.fromJson(json['coreImage'] as Map<String, dynamic>)
+          : null,
     );
   }
 }

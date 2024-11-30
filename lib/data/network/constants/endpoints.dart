@@ -9,4 +9,6 @@ class Endpoints {
   static const String login = "${baseUrl}auth/login";
 
   static const String menus = "${baseUrl}menus";
+
+  static String menuCategory(String menuId) => "${baseUrl}menus/$menuId/categories";
 }
