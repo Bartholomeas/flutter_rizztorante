@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/ui/checkout/models/cart_view_model.dart';
 import 'package:flutter_restaurant/ui/menu/models/menu_position_model.dart';
+import 'package:provider/provider.dart';
 
 class MenuPosition extends StatelessWidget {
   final MenuPositionModel menuPosition;
@@ -96,11 +98,16 @@ class MenuPosition extends StatelessWidget {
                     const Spacer(),
                     ElevatedButton.icon(
                       onPressed: () {
-                        // TODO: Implement add to cart functionality
+                        context.read<CartViewModel>().addToCart(menuPosition);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  "Dodano ${menuPosition.name} do koszyka")),
+                        );
                       },
                       icon: const Icon(
                         Icons.add_shopping_cart,
-                        size: 18,
+                        size: 14,
                         color: Colors.white,
                       ),
                       label: const Text(
@@ -110,8 +117,8 @@ class MenuPosition extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
-                        textStyle: const TextStyle(fontSize: 12),
+                            horizontal: 8, vertical: 4),
+                        textStyle: const TextStyle(fontSize: 10),
                       ),
                     ),
                   ],

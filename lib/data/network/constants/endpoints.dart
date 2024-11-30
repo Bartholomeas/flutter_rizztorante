@@ -10,5 +10,9 @@ class Endpoints {
 
   static const String menus = "${baseUrl}menus";
 
-  static String menuCategory(String menuId) => "${baseUrl}menus/$menuId/categories";
+  static const String cart = "${baseUrl}cart";
+  static const String addToCart = "${baseUrl}cart/item";
+
+  static String menuCategory(String menuId) =>
+      "${baseUrl}menus/$menuId/categories";
 }
