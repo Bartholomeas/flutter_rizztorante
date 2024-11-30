@@ -3,14 +3,14 @@ import 'package:flutter_restaurant/ui/menu/components/menu_list_item.dart';
 import 'package:flutter_restaurant/ui/menu/menu_view_model.dart';
 import 'package:provider/provider.dart';
 
-class MenuPage extends StatefulWidget {
-  const MenuPage({super.key});
+class MenuContent extends StatefulWidget {
+  const MenuContent({super.key});
 
   @override
-  State<MenuPage> createState() => _MenuPageState();
+  State<MenuContent> createState() => _MenuContentState();
 }
 
-class _MenuPageState extends State<MenuPage> {
+class _MenuContentState extends State<MenuContent> {
   @override
   void initState() {
     super.initState();
@@ -19,20 +19,22 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return ChangeNotifierProvider(
+  //     create: (context) => MenuViewModel(),
+  //     child: initView(context),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MenuViewModel(),
-      child: initView(context),
-    );
-  }
-}
+    return Consumer<MenuViewModel>(builder: (context, menuViewModel, child) {
+      // if (menuViewModel.apiState == ApiState.loading &&
+      //     menuViewModel.menus.isEmpty) {
+      //   return const Center(child: CircularProgressIndicator());
+      // }
 
-Widget initView(BuildContext context) {
-  MenuViewModel menuViewModel = Provider.of<MenuViewModel>(context);
-  return Scaffold(
-    appBar: AppBar(title: const Text("Wybierz pozycje z menu")),
-    body: Builder(builder: (context) {
       return ListView.builder(
         itemCount: menuViewModel.menus.length,
         itemBuilder: (context, index) {
@@ -40,6 +42,6 @@ Widget initView(BuildContext context) {
           return MenuListItem(menu: menu);
         },
       );
-    }),
-  );
+    });
+  }
 }

@@ -38,7 +38,6 @@ class _MenuListItemState extends State<MenuListItem> {
           if (_isExpanded)
             Consumer<MenuViewModel>(builder: (context, viewModel, child) {
               final categories = viewModel.menuCategories[widget.menu.id];
-              print("categories: $categories");
               if (categories == null || categories.isEmpty) {
                 return const Padding(
                     padding: EdgeInsets.all(16.0),
