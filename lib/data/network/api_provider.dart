@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_restaurant/data/network/constants/Endpoints.dart';
+import 'package:flutter_restaurant/data/network/constants/endpoints.dart';
 import 'package:flutter_restaurant/data/network/dio_client.dart';
 
 class ApiProvider {
@@ -24,6 +24,37 @@ class ApiProvider {
     } catch (err) {
       print('Login error in ApiProvider: $err');
 
+      rethrow;
+    }
+  }
+
+  Future<dynamic> getCart() async {
+    try {
+      final response = await _dioClient.get(Endpoints.cart);
+      if (response != null) {
+        return response;
+      }
+      throw Exception('Null response from server');
+    } catch (err) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> addToCart(
+      {required String menuPositionId, int? quantity = 1}) async {
+    try {
+      Map<String, dynamic> requestBody = {
+        "menuPositionId": menuPositionId,
+        "quantity": quantity,
+        "confiruableIngredients": []
+      };
+      final response =
+          await _dioClient.post(Endpoints.addToCart, data: requestBody);
+      if (response != null) {
+        return response;
+      }
+      throw Exception('Null response from server');
+    } catch (err) {
       rethrow;
     }
   }
