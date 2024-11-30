@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/ui/menu/menu_page.dart';
 import 'package:flutter_restaurant/ui/login/login_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +25,10 @@ class _LoginPageState extends State<LoginPage> {
 Widget initView(BuildContext context) {
   LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController =
+      TextEditingController(text: "test@gmail.com");
+  final TextEditingController passwordController =
+      TextEditingController(text: "!23Haslo");
 
   return Scaffold(
       appBar: AppBar(title: const Text("Login")),
@@ -60,9 +63,17 @@ Widget initView(BuildContext context) {
               ),
               onPressed: loginViewModel.apiState == ApiState.loading
                   ? null
-                  : () {
-                      loginViewModel.login(
-                          emailController.text, passwordController.text);
+                  : () async {
+                      await loginViewModel
+                          .login(emailController.text, passwordController.text)
+                          .then((value) {
+                        if (loginViewModel.apiState == ApiState.success) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MenuPage()));
+                        }
+                      });
                     },
               child: loginViewModel.apiState == ApiState.loading
                   ? const SizedBox(

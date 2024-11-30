@@ -4,25 +4,30 @@ import 'package:flutter_restaurant/model/user_model.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final _apiProvider = ApiProvider();
-  ApiState apiState = ApiState.completed;
+  ApiState apiState = ApiState.initial;
   UserModel? currentUser;
 
   bool get isLoggedIn => currentUser != null;
 
-  Future<void> login(String email, String password) async {
-    try {
-      apiState = ApiState.loading;
-      notifyListeners();
+  Future<bool> login(String email, String password) async {
+    apiState = ApiState.loading;
+    notifyListeners();
 
+    try {
       var response =
           await _apiProvider.postLogin(email: email, password: password);
 
       currentUser = UserModel.fromJson(response);
-      apiState = ApiState.completed;
+      apiState = ApiState.success;
       notifyListeners();
+      return true;
     } catch (err) {
+      if (kDebugMode) {
+        print("Login error::: $err");
+      }
       apiState = ApiState.error;
       notifyListeners();
+      return false;
     }
   }
 
@@ -32,10 +37,7 @@ class LoginViewModel extends ChangeNotifier {
       cl = cntr + 10;
       apiState = ApiState.loading;
       notifyListeners();
-      apiState = ApiState.completed;
-
-      notifyListeners();
-
+      apiState = ApiState.success;
       notifyListeners();
     } catch (err) {
       if (kDebugMode) {
@@ -47,4 +49,4 @@ class LoginViewModel extends ChangeNotifier {
   }
 }
 
-enum ApiState { loading, completed, error }
+enum ApiState { initial, loading, success, error }
