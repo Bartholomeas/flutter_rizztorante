@@ -18,4 +18,6 @@ class Endpoints {
 
   static String menuPositionDetails(String positionId) =>
       "${baseUrl}menus/positions/$positionId";
+
+  static const String logout = "${baseUrl}auth/logout";
 }

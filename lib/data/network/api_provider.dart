@@ -98,4 +98,12 @@ class ApiProvider {
       rethrow;
     }
   }
+
+  Future<void> logout() async {
+    try {
+      await _dioClient.post(Endpoints.logout);
+    } catch (err) {
+      rethrow;
+    }
+  }
 }

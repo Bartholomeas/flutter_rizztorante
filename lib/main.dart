@@ -31,14 +31,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: providerList,
-        child: MaterialApp(
-          title: "Rizztorante",
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-              primarySwatch: Colors.amber,
-              visualDensity: VisualDensity.adaptivePlatformDensity),
-          home: const LoginPage(),
-        ));
+      providers: providerList,
+      child: MaterialApp(
+        title: "Rizztorante",
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.amber,
+          visualDensity: VisualDensity.adaptivePlatformDensity
+        ),
+        initialRoute: '/login',
+        routes: {
+          '/login': (context) => const LoginPage(),
+        },
+        home: const LoginPage(),
+      )
+    );
   }
 }
