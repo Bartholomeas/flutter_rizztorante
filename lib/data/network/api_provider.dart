@@ -84,4 +84,18 @@ class ApiProvider {
       rethrow;
     }
   }
+
+  Future<dynamic> getMenuPositionDetails(String positionId) async {
+    try {
+      final response =
+          await _dioClient.get(Endpoints.menuPositionDetails(positionId));
+      if (response != null) {
+        return response;
+      }
+      throw Exception('Null response from server');
+    } catch (err) {
+      print('Error in getMenuPositionDetails: $err');
+      rethrow;
+    }
+  }
 }

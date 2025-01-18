@@ -15,4 +15,7 @@ class Endpoints {
 
   static String menuCategory(String menuId) =>
       "${baseUrl}menus/$menuId/categories";
+
+  static String menuPositionDetails(String positionId) =>
+      "${baseUrl}menus/positions/$positionId";
 }

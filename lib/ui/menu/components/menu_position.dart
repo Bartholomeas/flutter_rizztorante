@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/ui/checkout/models/cart_view_model.dart';
 import 'package:flutter_restaurant/ui/menu/models/menu_position_model.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_restaurant/ui/menu/pages/menu_position_details_page.dart';
 
 class MenuPosition extends StatelessWidget {
   final MenuPositionModel menuPosition;
@@ -19,7 +20,7 @@ class MenuPosition extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                menuPosition.coreImage!.url!,
+                menuPosition.coreImage!.url,
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,
@@ -28,8 +29,21 @@ class MenuPosition extends StatelessWidget {
                     width: 60,
                     height: 60,
                     color: Colors.grey[200],
-                    child: const Icon(Icons.image_not_supported,
-                        color: Colors.grey),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.image_not_supported,
+                            size: 24, color: Colors.grey),
+                        Text(
+                          'Brak zdjęcia',
+                          style: TextStyle(
+                            fontSize: 8,
+                            color: Colors.grey[600],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
@@ -89,37 +103,65 @@ class MenuPosition extends StatelessWidget {
 
                 Row(
                   children: [
-                    if (menuPosition.isVegetarian)
-                      _buildTag('Wege', Colors.green),
-                    if (menuPosition.isGlutenFree)
-                      _buildTag('Bezglutenowe', Colors.blue),
-                    if (menuPosition.isVegan)
-                      _buildTag('Vegan', Colors.green[700]!),
-                    const Spacer(),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        context.read<CartViewModel>().addToCart(menuPosition);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  "Dodano ${menuPosition.name} do koszyka")),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.add_shopping_cart,
-                        size: 14,
-                        color: Colors.white,
+                    Expanded(
+                      child: Wrap(
+                        spacing: 8,
+                        children: [
+                          if (menuPosition.isVegetarian)
+                            _buildTag('Wege', Colors.green),
+                          if (menuPosition.isGlutenFree)
+                            _buildTag('Bezglutenowe', Colors.blue),
+                          if (menuPosition.isVegan)
+                            _buildTag('Vegan', Colors.green[700]!),
+                        ],
                       ),
-                      label: const Text(
-                        'Dodaj do koszyka',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        textStyle: const TextStyle(fontSize: 10),
-                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MenuPositionDetailsPage(
+                                  positionId: menuPosition.id,
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text('Szczegóły'),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            context
+                                .read<CartViewModel>()
+                                .addToCart(menuPosition);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    "Dodano ${menuPosition.name} do koszyka"),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.add_shopping_cart,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                          label: const Text(
+                            'Dodaj do koszyka',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            textStyle: const TextStyle(fontSize: 10),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
